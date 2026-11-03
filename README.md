@@ -23,6 +23,7 @@ under [What's left out](#whats-left-out). The test plan in `PREREG.md` was merge
 | `runs/<run_id>/llm_calls.jsonl` | Every platform model call of the run: component, model, tokens, cost, job ID. |
 | `runs/<run_id>/trials/jNN-rR.json` | The trial for job NN, repeat R: its 12 invoice IDs and where each came from (sample or synthetic). No answer keys. |
 | `results/findings.md` | **Start here:** the headline result, the failure we found, and the change we propose. |
+| `results/change-on/` | The same tables and charts with the AGE-39 change on (accuracy-first tie-break), recomputed from the same runs: `analyze --runs tuning-r1 fresh-r1 --change on`. |
 | `results/main_table.md` / `.csv` | The main table: mean selection quality (SQ) with a 95% CI, hit rate, bad picks, cost per correct invoice and time to hire for Trial-then-Hire (6 invoices), profile-reading, cheapest and random, plus the PREREG §7 verdict. |
 | `results/report.md` | Every table in one page: trial-size sweep, per job, by job type, real vs synthetic, run-to-run noise, ground truth, exploratory diagnostics and checks. |
 | `results/*.csv` | Machine-readable versions: `sweep`, `ground_truth`, `per_job`, `noise`. |
