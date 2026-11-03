@@ -82,8 +82,8 @@ The analysis makes no model or provider calls. It reads the logs only, so it giv
 `results/` every time (seeded bootstraps and draws):
 
 ```bash
-uv run python -m experiments.hw7.analyze --runs tuning-r1
+uv run python -m experiments.hw7.analyze --runs tuning-r1 fresh-r1
 # or against this repo's copy of the logs:
-uv run python -m experiments.hw7.analyze --runs tuning-r1 \
+uv run python -m experiments.hw7.analyze --runs tuning-r1 fresh-r1 \
     --runs-dir ../agent-hunter-hw7/runs --manifest ../agent-hunter-hw7/jobs/manifest.json --out /tmp/results
 ```
