@@ -34,11 +34,19 @@ under [What's left out](#whats-left-out). The test plan in `PREREG.md` was merge
 | -- | -- | -- |
 | `j01-check` | Harness check, job j01 only, 1 repeat. | Not part of the analysis; held-out answers from it are reused (`cached_from`) by later runs. |
 | `tuning-r1` | **Tuning round:** jobs j01–j08, Trial-then-Hire 2 repeats (r1, r2), held-out pile once, profile pick 5×, cheapest pick. | 8/8 jobs done, no errors. $6.50 total ($6.49 providers, $0.011 platform), 1,932 provider calls, 27.6 min. |
+| `fresh-r1` | **Fresh round:** jobs j09–j12, same design as `tuning-r1`, code with the AGE-39 change merged (off by default; it only changes selection, so `analyze --change on` re-ranks these same logs). | 4/4 jobs done, no errors. $3.12 total ($3.11 providers, $0.006 platform), 1,008 provider calls, 20.0 min. |
 
 `tuning-r1` notes: the first start stopped after 2 platform calls ($0.0002) because the PDF renderer
 couldn't find its system libraries; it was resumed under the same run ID, so `llm_calls.jsonl` holds those 2
 calls too; `wall_clock_s` (1,657 s) is the resumed part, `wall_clock_s_total` (1,663 s) includes the first start. Platform calls ran on Chris's Parley account
 (`--platform-account chris`) instead of Nathalie's; the account only affects billing.
+
+`fresh-r1` notes: j09's first try at repeat r1 ran into network trouble (85 timeouts). Those 84 rows and
+the summaries of the stopped tries are kept in `runs/fresh-r1/discarded/`, and the 84 (provider, invoice)
+pairs were sent again. The resend was blocked by Parley's 402 `INSUFFICIENT_TOKENS` (Chris's account had
+used up its monthly free-model token allowance), so its last 63 calls ran with the providers service on
+Nathalie's Parley account. Code and providers commit are unchanged; the account only affects billing.
+`wall_clock_s_total` (1,198 s) adds up all tries, including the stopped ones.
 
 ## What's left out
 
