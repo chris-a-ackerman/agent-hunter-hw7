@@ -22,6 +22,11 @@ under [What's left out](#whats-left-out). The test plan in `PREREG.md` was merge
 | `runs/<run_id>/picks.jsonl` | One row per pick: method `tth` (Trial-then-Hire, per repeat), `profile` (AI reads the agent cards, 5 runs) or `cheapest`; picked provider, tie status, reason, selection cost and time, per-step timings. |
 | `runs/<run_id>/llm_calls.jsonl` | Every platform model call of the run: component, model, tokens, cost, job ID. |
 | `runs/<run_id>/trials/jNN-rR.json` | The trial for job NN, repeat R: its 12 invoice IDs and where each came from (sample or synthetic). No answer keys. |
+| `results/findings.md` | **Start here:** the headline result, the failure we found, and the change we propose. |
+| `results/main_table.md` / `.csv` | The main table: mean selection quality (SQ) with a 95% CI, hit rate, bad picks, cost per correct invoice and time to hire for Trial-then-Hire (6 invoices), profile-reading, cheapest and random, plus the PREREG §7 verdict. |
+| `results/report.md` | Every table in one page: trial-size sweep, per job, by job type, real vs synthetic, run-to-run noise, ground truth, exploratory diagnostics and checks. |
+| `results/*.csv` | Machine-readable versions: `sweep`, `ground_truth`, `per_job`, `noise`. |
+| `results/sq_vs_trial_size.png`, `results/tie_rate_vs_trial_size.png` | The two charts. |
 
 ### Runs
 
@@ -62,5 +67,14 @@ uv run python -m experiments.hw7.run_benchmark --jobs tuning --repeat 2 --max-sp
 ```
 
 Rerunning with the same `--run-id` resumes: (provider, invoice) pairs and picks already logged are
-skipped. Model outputs aren't deterministic, so a rerun gives new rows, not identical ones. Analysis results
-will be added under `results/`.
+skipped. Model outputs aren't deterministic, so a rerun gives new rows, not identical ones.
+
+The analysis makes no model or provider calls. It reads the logs only, so it gives exactly the same
+`results/` every time (seeded bootstraps and draws):
+
+```bash
+uv run python -m experiments.hw7.analyze --runs tuning-r1
+# or against this repo's copy of the logs:
+uv run python -m experiments.hw7.analyze --runs tuning-r1 \
+    --runs-dir ../agent-hunter-hw7/runs --manifest ../agent-hunter-hw7/jobs/manifest.json --out /tmp/results
+```
